@@ -2,14 +2,29 @@
   "expo": {
     "name": "WebView RN Test",
     "slug": "webview-rn-test",
+    "scheme": "webviewrntest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow camera access to upload photos from the web app.",
+        "NSMicrophoneUsageDescription": "Allow microphone access when the web app records media.",
+        "NSPhotoLibraryUsageDescription": "Allow photo library access to upload files from the web app.",
+        "NSPhotoLibraryAddUsageDescription": "Allow saving downloaded media from the web app."
+      }
     },
     "android": {
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES",
+        "READ_MEDIA_VIDEO"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -17,6 +32,15 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       }
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#0b63ce",
+          "defaultChannel": "default"
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }
