@@ -1,48 +1,67 @@
 {
   "expo": {
-    "name": "WebView RN Test",
-    "slug": "webview-rn-test",
-    "scheme": "webviewrntest",
-    "version": "1.0.0",
+    "name": "Jingle Bells School",
+    "slug": "jingleBellsSchool",
+    "version": "1.0.4",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons.png",
     "userInterfaceStyle": "light",
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSCameraUsageDescription": "Allow camera access to upload photos from the web app.",
-        "NSMicrophoneUsageDescription": "Allow microphone access when the web app records media.",
-        "NSPhotoLibraryUsageDescription": "Allow photo library access to upload files from the web app.",
-        "NSPhotoLibraryAddUsageDescription": "Allow saving downloaded media from the web app."
-      }
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icons.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
     },
     "android": {
-      "permissions": [
-        "CAMERA",
-        "RECORD_AUDIO",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "READ_MEDIA_IMAGES",
-        "READ_MEDIA_VIDEO"
-      ],
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/adaptive-icons.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.Efox.jingleBellsSchool",
+      "notification": {
+        "icon": "./assets/icons.png",
+        "color": "#ffffff"
       }
     },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "color": "#0b63ce",
-          "defaultChannel": "default"
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "3",
+      "usesPushNotifications": true,
+      "bundleIdentifier": "com.Efox.jingleBellsSchool",
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "This app uses notifications to send important school updates, attendance alerts, and announcements.",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "LSApplicationQueriesSchemes": [
+          "upi",
+          "tez",
+          "paytmmp",
+          "phonepe",
+          "bhim",
+          "amazon",
+          "googlepay"
+        ],
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "androidhpschoolapp.inventive.in": {
+              "NSIncludesSubdomains": true,
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": false,
+              "NSTemporaryExceptionMinimumTLSVersion": "TLSv1.2"
+            }
+          }
         }
-      ]
-    ],
+      }
+    },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicons.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a697ba70-d5e9-4308-9cf1-da873600a5c0"
+      }
     }
   }
 }

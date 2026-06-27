@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bridge Test Page</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #f6f8fb;
+        color: #17212b;
+      }
+
+      main {
+        min-height: 100vh;
+        padding: 22px 16px calc(28px + env(safe-area-inset-bottom));
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0 0 18px;
+        color: #536171;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      button {
+        width: 100%;
+        min-height: 52px;
+        border: 0;
+        border-radius: 8px;
+        background: #0f766e;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      button:active {
+        opacity: 0.82;
+      }
+
+      .secondary {
+        background: #245b89;
+      }
+
+      .tertiary {
+        background: #5b4c9a;
+      }
+
+      .camera {
+        background: #9a4d16;
+      }
+
+      .panel {
+        margin-top: 18px;
+        border: 1px solid #d9e2ea;
+        border-radius: 8px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .panel h2 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+
+      pre {
+        min-height: 140px;
+        max-height: 320px;
+        margin: 0;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #22313f;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      img {
+        display: none;
+        width: 100%;
+        max-height: 260px;
+        object-fit: contain;
+        margin-top: 12px;
+        border-radius: 8px;
+        border: 1px solid #d9e2ea;
+        background: #f8fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>WebView Bridge Test</h1>
+      <p>Use these buttons to test native download, upload, gallery, and camera actions.</p>
+
+      <div class="grid">
+        <button type="button" onclick="sendToNative('downloadFile')">
+          Download Test File
+        </button>
+        <button class="secondary" type="button" onclick="sendToNative('uploadFile')">
+          Upload File
+        </button>
+        <button class="tertiary" type="button" onclick="sendToNative('pickPhoto')">
+          Pick Photo
+        </button>
+        <button class="camera" type="button" onclick="sendToNative('openCamera')">
+          Open Camera
+        </button>
+      </div>
+
+      <section class="panel">
+        <h2>Bridge Log</h2>
+        <pre id="log">Ready.</pre>
+        <img id="preview" alt="Selected preview" />
+      </section>
+    </main>
+
+    <script>
+      const logEl = document.getElementById('log');
+      const previewEl = document.getElementById('preview');
+
+      function writeLog(value) {
+        const text =
+          typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+        logEl.textContent = `${new Date().toLocaleTimeString()}\\n${text}`;
+      }
+
+      function sendToNative(action) {
+        writeLog({ status: 'sent_to_native', action });
+        window.ReactNativeWebView.postMessage(JSON.stringify({ action }));
+      }
+
+      window.receiveNativeBridgeResult = function receiveNativeBridgeResult(result) {
+        writeLog(result);
+
+        if (result && result.uri && result.mediaType === 'image') {
+          previewEl.src = result.uri;
+          previewEl.style.display = 'block';
+          return;
+        }
+
+        previewEl.removeAttribute('src');
+        previewEl.style.display = 'none';
+      };
+    </script>
+  </body>
+</html>
