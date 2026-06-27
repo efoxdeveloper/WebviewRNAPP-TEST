@@ -149,6 +149,7 @@ function MainApp() {
   const webViewRef = useRef(null);
   const activeDownloads = useRef(new Set());
   const webViewStartRef = useRef(null);
+  const splashStartRef = useRef(null);
 
   const [showSplash, setShowSplash] = useState(true);
   const [webViewLoaded, setWebViewLoaded] = useState(false);
@@ -188,8 +189,17 @@ function MainApp() {
   }, []);
 
   useEffect(() => {
-    const minTimer = setTimeout(() => setSplashMinimumReached(true), 3000);
-    const maxTimer = setTimeout(() => setSplashMaxWaitReached(true), 10000);
+    splashStartRef.current = Date.now();
+    console.log("[Splash] Visible started at:", splashStartRef.current);
+
+    const minTimer = setTimeout(() => {
+      console.log("[Splash] Minimum visible time reached: 3000 ms (3.00 s)");
+      setSplashMinimumReached(true);
+    }, 3000);
+    const maxTimer = setTimeout(() => {
+      console.log("[Splash] Maximum wait reached: 10000 ms (10.00 s)");
+      setSplashMaxWaitReached(true);
+    }, 10000);
 
     return () => {
       clearTimeout(minTimer);
@@ -200,6 +210,9 @@ function MainApp() {
   useEffect(() => {
     if (!showSplash) return;
     if ((splashMinimumReached && webViewLoaded) || splashMaxWaitReached) {
+      const now = Date.now();
+      const visibleMs = splashStartRef.current ? now - splashStartRef.current : 0;
+      console.log(`[Splash] Hidden after ${visibleMs} ms (${(visibleMs / 1000).toFixed(2)} s)`);
       setShowSplash(false);
     }
   }, [showSplash, splashMinimumReached, splashMaxWaitReached, webViewLoaded]);
@@ -612,9 +625,15 @@ function MainApp() {
           onHttpError={event => console.log("HTTP ERROR", event.nativeEvent)}
           onNavigationStateChange={navState => setCanGoBack(navState.canGoBack)}
           onLoadStart={() => {
-            if (!webViewStartRef.current) webViewStartRef.current = Date.now();
+            webViewStartRef.current = Date.now();
+            console.log("[WebView] Load started at:", webViewStartRef.current);
           }}
-          onLoadEnd={() => setWebViewLoaded(true)}
+          onLoadEnd={() => {
+            const now = Date.now();
+            const loadMs = webViewStartRef.current ? now - webViewStartRef.current : 0;
+            console.log(`[WebView] Load finished in ${loadMs} ms (${(loadMs / 1000).toFixed(2)} s)`);
+            setWebViewLoaded(true);
+          }}
           setBuiltInZoomControls={false}
           setDisplayZoomControls={false}
           automaticallyAdjustContentInsets={false}
